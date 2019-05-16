@@ -1,0 +1,104 @@
+.title-area {
+    text-align: center;
+    margin: 2% 0 3%;
+}
+
+/*.title-area a {*/
+/*    position: absolute;*/
+/*    top: 6%;*/
+/*    right: 33%;*/
+/*    vertical-align: middle;*/
+/*    letter-spacing: .3rem;*/
+/*}*/
+
+.addUserBtn {
+    text-align: center;
+    padding: 2%;
+}
+
+.addUserBtn a{
+    letter-spacing: .3rem;
+    margin: auto;
+}
+
+.pagination {
+    text-align: center;
+    z-index: -100;
+}
+
+.p-fixed {
+    position: fixed;
+}
+
+.p-absolute {
+    position: absolute;
+}
+
+.mainArea {
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+#app {
+    height: 100vh;
+}
+
+mainArea__form {
+    margin: auto;
+}
+
+.d-flex-center {
+    display: flex;
+    justify-content: center;
+}
+
+.ml-1 {
+    margin-left: 1rem;
+}
+
+.mainArea__form-close {
+    top: -1.5rem;
+    right: 1.5rem;
+}
+
+.mainArea__form {
+    top: 20%;
+}
+
+.last-next-page {
+    font-size: 2rem;
+}
+
+.pageList__item {
+    font-size: 1.5rem;
+    padding: .5rem;
+}
+
+.pageList li:hover {
+    color: #e57373;
+}
+
+.pageList li {
+    vertical-align: center;
+    line-height: 1rem;
+    cursor: pointer;
+}
+
+.pageList__first-last-items {
+    font-size: 1.2rem;
+    padding: .5rem;
+}
+
+.editItem {
+    cursor: pointer;
+}
+
+.editItem:hover {
+    color: #e57373;
+}
+
+.mainArea__form-title {
+    text-align: center;
+    font-size: 2rem;
+}

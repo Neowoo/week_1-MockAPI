@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./mockAPI.css">
+    <title>Document</title>
+</head>
+
+<body>
+<div id="app">
+    <h3 class="title-area">
+        會員資料系統
+    </h3>
+    <div class="mainArea d-flex-center">
+        <!--    新增表單    -->
+        <div class="row p-fixed mainArea__form" v-if="addFormToggle">
+            <a class="btn-floating btn-large waves-effect helfway-fab red lighten-2 mainArea__form-close"
+               @click="editCancel"><i class="material-icons">close</i></a>
+            <form class="col mainArea__form grey lighten-5 z-depth-2">
+                <h5 class="mainArea__form-title">新增會員資料</h5>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="add_last_name" type="text" class="validate" v-model="userDataAdd.lastName">
+                        <label for="add_last_name">姓</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="add_first_name" type="text" class="validate" v-model="userDataAdd.firstName">
+                        <label for="add_first_name">名</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="add_tel" type="text" class="validate" v-model="userDataAdd.tel">
+                        <label for="add_tel">電話</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="add_email" type="email" class="validate" v-model="userDataAdd.email">
+                        <label for="add_email">Email</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6 offset-s6">
+                        <button class="btn grey lighten-2" @click="clearAddData">取消</button>
+                        <button class="btn teal lighten-3 ml-1" @click.prevent="addUserConfirm">確定</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--    編輯表單    -->
+        <div class="row p-fixed mainArea__form" v-if="editFormToggle">
+            <a class="btn-floating btn-large waves-effect helfway-fab red lighten-2 mainArea__form-close"
+               @click="editCancel"><i class="material-icons">close</i></a>
+            <form class="col mainArea__form grey lighten-5 z-depth-2">
+                <h5 class="mainArea__form-title">編輯會員資料</h5>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="last_name" type="text" class="validate" v-model="userDataUpdate.lastName">
+                        <label for="last_name">姓</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="first_name" type="text" class="validate" v-model="userDataUpdate.firstName">
+                        <label for="first_name">名</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="tel" type="text" class="validate" v-model="userDataUpdate.tel">
+                        <label for="tel">電話</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="email" type="email" class="validate" v-model="userDataUpdate.email">
+                        <label for="email">Email</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6 offset-s6">
+                        <button class="btn grey lighten-2" @click="editCancel">取消</button>
+                        <button class="btn teal lighten-3 ml-1" @click.prevent="editConfirm">確定</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="striped centered">
+            <thead>
+            <tr>
+                <th>會員編號</th>
+                <th>姓名</th>
+                <th>電話</th>
+                <th>email</th>
+                <th>編輯</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr v-for="(users, index) in userData" :key="index">
+                <td>{{users.id}}</td>
+                <td>{{users.name}}</td>
+                <td>{{users.tel}}</td>
+                <td>{{users.email}}</td>
+                <td>
+                    <i class="material-icons col m3 editItem" @click="editUser(index)">create</i>
+                    <i class="material-icons col m3 editItem" @click="deleteUser(index)">clear</i>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="addUserBtn">
+        <a class="red lighten-2 btn-small" @click="addFormToggle = true"><i class="material-icons left">add</i>新增會員</a>
+    </div>
+    <ul class="d-flex-center pageList">
+        <li class="pageList__first-last-items" @click="firstPage">第一頁</li>
+        <li><i class="material-icons last-next-page" @click="lastPage">chevron_left</i></li>
+        <li class="pageList__item" v-for="(pages, index) in pageNumbers" :key="index" @click="choosePage(index)">
+            {{pages}}
+        </li>
+        <!-- <li class="waves-effect active" @click="firstPage"><a href="#!">1</a></li>
+        <li class="waves-effect" @click="secondPage"><a href="#!">2</a></li> -->
+        <li><i class="material-icons last-next-page" @click="nextPage">chevron_right</i></li>
+        <li class="pageList__first-last-items" @click="theLastPage">第末頁</li>
+    </ul>
+</div>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            pageNumbers: [],
+            userDataUpdate: {
+                lastName: "",
+                firstName: "",
+                tel: "",
+                email: ""
+            },
+            userDataAdd:{
+                lastName: "",
+                firstName: "",
+                tel: "",
+                email: ""
+            },
+            queryUserId: '',
+            editFormToggle: false,
+            addFormToggle: false,
+            userData: [],
+            currentPage: 1,
+        },
+        methods: {
+            firstPage() {
+                var jsonData = [];
+                this.currentPage = 1;
+                axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users?page=1&limit=6")
+                    .then(res => {
+                        for (i = 0; i < res.data.length; i++) {
+                            jsonData.push(res.data[i]);
+                        }
+                    })
+                this.userData = jsonData;
+            },
+            theLastPage() {
+                var jsonData = [];
+                this.currentPage = this.pageNumbers.length;
+                console.log(this.currentPage)
+                axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users?page=" + this.currentPage +
+                    "&limit=6")
+                    .then(res => {
+                        for (i = 0; i < res.data.length; i++) {
+                            jsonData.push(res.data[i]);
+                        }
+                    })
+                this.userData = jsonData;
+            },
+            choosePage(index) {
+                var jsonData = [];
+                this.currentPage = index + 1;
+                axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users?page=" + this.currentPage +
+                    "&limit=6")
+                    .then(res => {
+                        for (i = 0; i < res.data.length; i++) {
+                            jsonData.push(res.data[i]);
+                        }
+                    });
+                this.userData = jsonData;
+            },
+            lastPage() {
+                if (this.currentPage > 1) {
+                    let jsonData = [];
+                    this.currentPage -= 1
+                    axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users?page=" + this.currentPage +
+                        "&limit=6")
+                        .then(res => {
+                            console.log(res);
+                            for (i = 0; i < res.data.length; i++) {
+                                jsonData.push(res.data[i]);
+                            }
+                        })
+                    this.userData = jsonData;
+                    this.userListReload();
+                    console.log(this.currentPage)
+                }
+            },
+            nextPage() {
+                if (this.currentPage < this.pageNumbers.length) {
+                    let jsonData = [];
+                    this.currentPage += 1
+                    axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users?page=" + this.currentPage +
+                        "&limit=6")
+                        .then(res => {
+                            console.log(res);
+                            for (i = 0; i < res.data.length; i++) {
+                                jsonData.push(res.data[i]);
+                            }
+                        })
+                    this.userData = jsonData;
+                    this.userListReload();
+                    console.log(this.currentPage)
+                }
+            },
+            userListReload() {
+                var jsonData = [];
+                axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users?page=" + this.currentPage +
+                    "&limit=6")
+                    .then(res => {
+                        for (i = 0; i < res.data.length; i++) {
+                            jsonData.push(res.data[i]);
+                        }
+                        console.log(jsonData)
+                    })
+                this.userData = jsonData;
+            },
+            deleteUser(index) {
+                this.queryUserId = this.userData[index].id;
+                console.log(this.userData[index].id)
+                axios.delete("https://5cdab7b5eb39f80014a75933.mockapi.io/users/" + this.queryUserId)
+                    .then(res => {
+                        console.log(res);
+                        this.userListReload();
+                        this.checkPageNumbers();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            editUser(index) {
+                this.queryUserId = this.userData[index].id;
+                this.editFormToggle = true;
+                console.log(this.queryUserId)
+            },
+            editCancel() {
+                this.editFormToggle = false;
+                this.addFormToggle = false;
+                var userDataUpdate = this.userDataUpdate;
+                userDataUpdate.lastName = "",
+                    userDataUpdate.firstName = "",
+                    userDataUpdate.tel = "",
+                    userDataUpdate.email = ""
+            },
+            editConfirm() {
+                var fullName = this.userDataUpdate.lastName + this.userDataUpdate.firstName;
+                axios.put("https://5cdab7b5eb39f80014a75933.mockapi.io/users/" + this.queryUserId, {
+                    name: fullName,
+                    tel: this.userDataUpdate.tel,
+                    email: this.userDataUpdate.email
+                })
+                    .then(res => {
+                        console.log(res);
+                        this.userListReload();
+                        this.editFormToggle = false;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            addUserConfirm(){
+                // alert('hi')
+                var fullName = this.userDataAdd.lastName + this.userDataAdd.firstName;
+                axios.post("https://5cdab7b5eb39f80014a75933.mockapi.io/users", {
+                    name: fullName,
+                    tel: this.userDataAdd.tel,
+                    email: this.userDataAdd.email
+                })
+                    .then( res => {
+                        console.log(res);
+                        this.checkPageNumbers()
+                        this.userListReload()
+                        this.clearAddData()
+                        this.addFormToggle = false;
+                    })
+                    .catch( err => {
+                        console.log(err);
+                    })
+            },
+            checkPageNumbers(){
+                axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users")
+                    .then(res => {
+                        var pageNumbers = [];
+                        var pageCounter = Math.ceil(res.data.length / 6);
+                        for (i = 1; i <= pageCounter; i++) {
+                            pageNumbers.push(i);
+                        }
+                        this.pageNumbers = pageNumbers;
+                        console.log(this.pageNumbers);
+                    })
+            },
+            clearAddData(){
+                this.userDataAdd.lastName = "";
+                this.userDataAdd.firstName = "";
+                this.userDataAdd.tel = "";
+                this.userDataAdd.email = "";
+            }
+        },
+        created() {
+            this.firstPage();
+            this.checkPageNumbers();
+        }
+    })
+</script>
+</body>
+
+</html>
