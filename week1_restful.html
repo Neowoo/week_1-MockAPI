@@ -24,41 +24,44 @@
     </h3>
     <div class="mainArea d-flex-center">
         <!--    新增表單    -->
-        <div class="row p-fixed mainArea__form" v-if="addFormToggle">
-            <a class="btn-floating btn-large waves-effect helfway-fab red lighten-2 mainArea__form-close"
-               @click="editCancel"><i class="material-icons">close</i></a>
-            <form class="col mainArea__form grey lighten-5 z-depth-2">
-                <h5 class="mainArea__form-title">新增會員資料</h5>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input id="add_last_name" type="text" class="validate" v-model="userDataAdd.lastName">
-                        <label for="add_last_name">姓</label>
+        <transition name="slide">
+            <div class="row p-fixed mainArea__form" v-if="addFormToggle">
+                <a class="btn-floating btn-large waves-effect helfway-fab red lighten-2 mainArea__form-close"
+                   @click="editCancel"><i class="material-icons">close</i></a>
+                <form class="col mainArea__form grey lighten-5 z-depth-2">
+                    <h5 class="mainArea__form-title">新增會員資料</h5>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="add_last_name" type="text" class="validate" v-model="userDataAdd.lastName">
+                            <label for="add_last_name">姓</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="add_first_name" type="text" class="validate" v-model="userDataAdd.firstName">
+                            <label for="add_first_name">名</label>
+                        </div>
                     </div>
-                    <div class="input-field col s6">
-                        <input id="add_first_name" type="text" class="validate" v-model="userDataAdd.firstName">
-                        <label for="add_first_name">名</label>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="add_tel" type="text" class="validate" v-model="userDataAdd.tel">
+                            <label for="add_tel">電話</label>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="add_tel" type="text" class="validate" v-model="userDataAdd.tel">
-                        <label for="add_tel">電話</label>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="add_email" type="email" class="validate" v-model="userDataAdd.email">
+                            <label for="add_email">Email</label>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="add_email" type="email" class="validate" v-model="userDataAdd.email">
-                        <label for="add_email">Email</label>
+                    <div class="row">
+                        <div class="col s6 offset-s6">
+                            <button class="btn grey lighten-2" @click="clearAddData">取消</button>
+                            <button class="btn teal lighten-3 ml-1" @click.prevent="addUserConfirm">確定</button>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col s6 offset-s6">
-                        <button class="btn grey lighten-2" @click="clearAddData">取消</button>
-                        <button class="btn teal lighten-3 ml-1" @click.prevent="addUserConfirm">確定</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        </transition>
+
         <!--    編輯表單    -->
         <div class="row p-fixed mainArea__form" v-if="editFormToggle">
             <a class="btn-floating btn-large waves-effect helfway-fab red lighten-2 mainArea__form-close"
