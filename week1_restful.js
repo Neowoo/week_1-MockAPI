@@ -1,5 +1,5 @@
 axios.defaults.baseURL = "https://5cdab7b5eb39f80014a75933.mockapi.io/users";
-
+// Vue.use(VeeValidate);
 let app = new Vue({
     el: "#app",
     data: {
@@ -154,7 +154,6 @@ let app = new Vue({
             reader.readAsDataURL(file);
         },
         editConfirm() {
-
 
             axios.put("/" + this.queryUserId, {
                 firstName: this.userDataUpdate.firstName,
