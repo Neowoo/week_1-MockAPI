@@ -154,6 +154,8 @@ let app = new Vue({
             reader.readAsDataURL(file);
         },
         editConfirm() {
+
+
             axios.put("/" + this.queryUserId, {
                 firstName: this.userDataUpdate.firstName,
                 lastName: this.userDataUpdate.lastName,
