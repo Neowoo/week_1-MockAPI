@@ -54,8 +54,9 @@ mainArea__form {
 }
 
 .mainArea__form-close {
-    top: -1.5rem;
-    right: 1.5rem;
+    position: absolute;
+    right: -8%;
+    top: -5%;
 }
 
 .mainArea__form {
@@ -68,7 +69,14 @@ mainArea__form {
 
 .pageList__item {
     font-size: 1.5rem;
-    padding: .5rem;
+    padding: .6rem;
+    margin: 0 .25rem;
+}
+
+.pageList__item-choose {
+    background-color: #e57373;
+    color: white;
+    border-radius: .3rem;
 }
 
 .pageList li:hover {
@@ -77,7 +85,7 @@ mainArea__form {
 
 .pageList li {
     vertical-align: center;
-    line-height: 1rem;
+    line-height: .8rem;
     cursor: pointer;
 }
 
@@ -99,3 +107,40 @@ mainArea__form {
     font-size: 2rem;
 }
 
+.add-userform-background {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.add-userform-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+}
+
+.edit-userform-background {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.edit-userform-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+}
