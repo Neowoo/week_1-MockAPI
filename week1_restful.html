@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./mockAPI.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC" rel="stylesheet">
-
+    <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -54,9 +54,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <h7 class="col s12 grey-text">照片</h7>
+                        <p class="col s12 grey-text">照片
+                        <p>
                         <div class="input-field col s12">
-                            <input id="add_photo" type="file" class="validate">
+                            <input id="add_photo" type="file" class="validate" @change="uploadPhoto_AddUser">
                         </div>
                     </div>
                     <div class="row">
@@ -89,7 +90,8 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="tel" type="text" class="validate" v-model="userDataUpdate.tel">
+                            <input id="tel" type="text" class="validate" v-model="userDataUpdate.tel"
+                                   pattern="09\\d{2}-?(\\d{3})-?(\\d{3})">
                             <label for="tel">電話</label>
                         </div>
                     </div>
@@ -100,9 +102,16 @@
                         </div>
                     </div>
                     <div class="row">
+                        <p class="col s12 grey-text">照片
+                        <p>
+                        <div class="input-field col s12">
+                            <input id="update_photo" type="file" class="validate" @change="uploadPhoto_updateUser">
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col s6 offset-s6">
                             <button class="btn grey lighten-2" @click="editCancel">取消</button>
-                            <button class="btn teal lighten-3 ml-1" @click.prevent="editConfirm">確定</button>
+                            <input type="submit" class="btn teal lighten-3 ml-1" @click="editConfirm">
                         </div>
                     </div>
                 </form>
@@ -122,9 +131,11 @@
             <tbody>
             <tr v-for="(users, index) in userData" :key="index">
                 <td>{{users.id}}</td>
-                <td>{{users.name}}</td>
+                <td>{{users.lastName + users.firstName}}</td>
                 <td>{{users.tel}}</td>
-                <td>{{users.email}}</td>
+                <td>
+                    <img :src="users.photo" alt="photo" width="120" height="120">
+                </td>
                 <td>
                     <i class="material-icons col m3 editItem" @click="editUser(index)">create</i>
                     <i class="material-icons col m3 editItem" @click="deleteUser(index)">clear</i>
