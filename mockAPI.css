@@ -73,11 +73,11 @@ mainArea__form {
     margin: 0 .25rem;
 }
 
-.pageList__item-choose {
-    background-color: #e57373;
-    color: white;
-    border-radius: .3rem;
-}
+/*.pageList__item-choose {*/
+/*    background-color: #e57373;*/
+/*    color: white;*/
+/*    border-radius: .3rem;*/
+/*}*/
 
 .pageList li:hover {
     color: #e57373;

@@ -1,4 +1,4 @@
-var app = new Vue({
+let app = new Vue({
         el: "#app",
         data: {
             pageNumbers: [],
@@ -22,7 +22,7 @@ var app = new Vue({
         },
         methods: {
             firstPage() {
-                var jsonData = [];
+                let jsonData = [];
                 this.currentPage = 1;
                 axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users?page=1&limit=6")
                     .then(res => {
@@ -33,7 +33,7 @@ var app = new Vue({
                 this.userData = jsonData;
             },
             theLastPage() {
-                var jsonData = [];
+                let jsonData = [];
                 this.currentPage = this.pageNumbers.length;
                 console.log(this.currentPage)
                 axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users?page=" + this.currentPage +
@@ -46,7 +46,7 @@ var app = new Vue({
                 this.userData = jsonData;
             },
             choosePage(index) {
-                var jsonData = [];
+                let jsonData = [];
                 this.currentPage = index + 1;
                 axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users?page=" + this.currentPage +
                     "&limit=6")
@@ -92,7 +92,7 @@ var app = new Vue({
                 }
             },
             userListReload() {
-                var jsonData = [];
+                let jsonData = [];
                 axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users?page=" + this.currentPage +
                     "&limit=6")
                     .then(res => {
@@ -124,14 +124,14 @@ var app = new Vue({
             editCancel() {
                 this.editFormToggle = false;
                 this.addFormToggle = false;
-                var userDataUpdate = this.userDataUpdate;
+                let userDataUpdate = this.userDataUpdate;
                 userDataUpdate.lastName = "",
                     userDataUpdate.firstName = "",
                     userDataUpdate.tel = "",
                     userDataUpdate.email = ""
             },
             editConfirm() {
-                var fullName = this.userDataUpdate.lastName + this.userDataUpdate.firstName;
+                let fullName = this.userDataUpdate.lastName + this.userDataUpdate.firstName;
                 axios.put("https://5cdab7b5eb39f80014a75933.mockapi.io/users/" + this.queryUserId, {
                     name: fullName,
                     tel: this.userDataUpdate.tel,
@@ -148,7 +148,7 @@ var app = new Vue({
             },
             addUserConfirm() {
                 // alert('hi')
-                var fullName = this.userDataAdd.lastName + this.userDataAdd.firstName;
+                let fullName = this.userDataAdd.lastName + this.userDataAdd.firstName;
                 axios.post("https://5cdab7b5eb39f80014a75933.mockapi.io/users", {
                     name: fullName,
                     tel: this.userDataAdd.tel,
@@ -168,8 +168,8 @@ var app = new Vue({
             checkPageNumbers() {
                 axios.get("https://5cdab7b5eb39f80014a75933.mockapi.io/users")
                     .then(res => {
-                        var pageNumbers = [];
-                        var pageCounter = Math.ceil(res.data.length / 6);
+                        let pageNumbers = [];
+                        let pageCounter = Math.ceil(res.data.length / 6);
                         for (i = 1; i <= pageCounter; i++) {
                             pageNumbers.push(i);
                         }
