@@ -2,6 +2,10 @@ axios.defaults.baseURL = "https://5cdab7b5eb39f80014a75933.mockapi.io/users";
 let app = new Vue({
     el: "#app",
     data: {
+        datePicker: {
+            mode: "single",
+            selectedDate: null
+        },
         pageNumbers: [],
         userDataUpdate: {
             lastName: "",
@@ -316,12 +320,5 @@ let app = new Vue({
         this.checkPageNumbers();
         var elems = document.querySelectorAll('.datepicker');
         var instances = M.Datepicker.init(elems, options);
-    },
-    mounted() {
-        document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('.datepicker');
-            M.Datepicker.init(elems, {});
-        });
-
     }
 })

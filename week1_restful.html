@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./mockAPI.css">
+    <link rel='stylesheet' href='https://unpkg.com/v-calendar/lib/v-calendar.min.css'>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -23,7 +24,7 @@
     </h3>
     <div class="mainArea d-flex-center">
         <!--    新增表單    -->
-        <div class="row p-fixed mainArea__form" v-if="addFormToggle">
+        <div class="row p-absolute mainArea__form" v-if="addFormToggle">
             <div class="add-userform-background" @click="buttonCancel"></div>
             <div class="add-userform-content">
                 <a class="btn-floating btn-large waves-effect helfway-fab red lighten-2 mainArea__form-close"
@@ -56,8 +57,8 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="add_birthday" type="text" class="datepicker">
-                            <label for="add_birthday">生日</label>
+                            <p>生日</p>
+                            <v-date-picker :mode="datePicker.mode" v-model="datePicker.selectedDate" color="Red"/>
                         </div>
                     </div>
                     <div class="row">
@@ -188,6 +189,13 @@
     </ul>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src='https://unpkg.com/v-calendar'></script>
 <script src="./week1_restful.js"></script>
 </body>
 </html>
+<script>
+    import VCalendar from "v-calendar/src/components/Calendar";
+    export default {
+        components: {VCalendar}
+    }
+</script>
