@@ -144,3 +144,11 @@ mainArea__form {
     display: flex;
     justify-content: center;
 }
+
+.validRecommend {
+    font-size: .5rem;
+}
+
+.tel-valid-recommend{
+    text-align: center;
+}
