@@ -170,6 +170,7 @@ let app = new Vue({
             this.userDataUpdate.lastName = userData.lastName;
             this.userDataUpdate.tel = userData.tel;
             this.userDataUpdate.birthday = new Date(userData.birthday);
+            this.userDataUpdate.gender = userData.gender;
             this.userDataUpdate.photo = userData.photo;
             this.userDataUpdate.interest = userData.interest;
             this.userDataUpdate.address.city = userData.city;
