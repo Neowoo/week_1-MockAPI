@@ -2,15 +2,21 @@ axios.defaults.baseURL = "https://5cdab7b5eb39f80014a75933.mockapi.io/users";
 let app = new Vue({
     el: "#app",
     data: {
-        datePicker: {
-            mode: "single",
-            selectedDate: null
-        },
+        maxDate: new Date(),
+        interestOptions: ["玩電動", "打籃球", "看書", "潛水", "測試", "飛行傘", "繪圖", "游泳", "寫書法"],
+        taiwanCities: ["臺北市", "基隆市", "新北市", "宜蘭縣", "新竹市", "新竹縣", "桃園縣", "苗栗縣", "臺中市", "彰化縣", "南投縣", "嘉義市", "嘉義縣", "雲林縣", "臺南市", "高雄市", "澎湖縣", "屏東縣", "臺東縣", "花蓮縣", "金門縣", "連江縣", "南海諸島"],
         pageNumbers: [],
         userDataUpdate: {
+            address: {
+                city: "",
+                address_detail: ""
+            },
             lastName: "",
             firstName: "",
             tel: "",
+            birthday: "",
+            gender: "",
+            interest: [],
             photo: "",
             lastName_valid: false,
             firstName_valid: false,
@@ -18,9 +24,16 @@ let app = new Vue({
             photo_valid: false
         },
         userDataAdd: {
+            address: {
+                city: "",
+                address_detail: ""
+            },
             lastName: "",
             firstName: "",
             tel: "",
+            birthday: "",
+            gender: "",
+            interest: [],
             photo: "",
             lastName_valid: false,
             firstName_valid: false,
@@ -32,6 +45,22 @@ let app = new Vue({
         addFormToggle: false,
         userData: [],
         currentPage: 1,
+    },
+    computed: {
+        addUser_birthdayFormat() {
+            let birthday = this.userDataAdd.birthday;
+            let YYYY = birthday.getFullYear();
+            let MM = birthday.getMonth() + 1;
+            let DD = birthday.getDate();
+            return YYYY + "-" + MM + "-" + DD;
+        },
+        editUser_birthdayFormat() {
+            let birthday = this.userDataUpdate.birthday;
+            let YYYY = birthday.getFullYear();
+            let MM = birthday.getMonth() + 1;
+            let DD = birthday.getDate();
+            return YYYY + "-" + MM + "-" + DD;
+        }
     },
     methods: {
         firstPage() {
@@ -137,23 +166,14 @@ let app = new Vue({
             // this.userDataUpdate.firstName = this.userData[index].firstName;
             // this.userDataUpdate.lastName = this.userData[index].lastName;
             // this.userDataUpdate.tel = this.userData[index].tel;
-            this.userDataUpdate.photo = this.userData[index].photo;
+            // this.userDataUpdate.photo = this.userData[index].photo;
             this.editFormToggle = true;
             console.log(this.userData[index])
         },
         buttonCancel() {
             this.editFormToggle = false;
             this.addFormToggle = false;
-            let userDataAdd = this.userDataAdd;
-            let userDataUpdate = this.userDataUpdate
             this.clearRemainData();
-            userDataAdd.lastName_valid = false;
-            userDataAdd.firstName_valid = false;
-            userDataAdd.tel_valid = false;
-            userDataUpdate.lastName_valid = false;
-            userDataUpdate.firstName_valid = false;
-            userDataUpdate.tel_valid = false;
-
         },
         uploadPhoto_AddUser(e) {
             let file = e.target.files[0];
@@ -179,7 +199,11 @@ let app = new Vue({
                     firstName: this.userDataUpdate.firstName,
                     lastName: this.userDataUpdate.lastName,
                     tel: this.userDataUpdate.tel,
-                    email: this.userDataUpdate.email,
+                    birthday: this.editUser_birthdayFormat,
+                    gender: this.userDataUpdate.gender,
+                    interest: this.userDataUpdate.interest,
+                    city: this.userDataUpdate.address.city,
+                    address: this.userDataUpdate.address.address_detail,
                     photo: this.userDataUpdate.photo
                 })
                     .then(res => {
@@ -237,7 +261,11 @@ let app = new Vue({
                     firstName: this.userDataAdd.firstName,
                     lastName: this.userDataAdd.lastName,
                     tel: this.userDataAdd.tel,
-                    email: this.userDataAdd.email,
+                    birthday: this.addUser_birthdayFormat,
+                    gender: this.userDataAdd.gender,
+                    interest: this.userDataAdd.interest,
+                    city: this.userDataAdd.address.city,
+                    address: this.userDataAdd.address.address_detail,
                     photo: this.userDataAdd.photo
                 })
                     .then(res => {
@@ -307,12 +335,25 @@ let app = new Vue({
             this.userDataAdd.lastName = "";
             this.userDataAdd.firstName = "";
             this.userDataAdd.tel = "";
-            this.userDataAdd.email = "";
+            this.userDataAdd.birthday = "";
+            this.userDataAdd.gender = "";
+            this.userDataAdd.interest = [];
+            this.userDataAdd.address.city = "";
+            this.userDataAdd.address.address_detail = "";
             this.userDataAdd.photo = "";
             this.userDataUpdate.lastName = "";
             this.userDataUpdate.firstName = "";
             this.userDataUpdate.tel = "";
+            this.userDataUpdate.birthday = "";
+            this.userDataUpdate.gender = "";
+            this.userDataUpdate.interest = [];
             this.userDataUpdate.photo = "";
+            this.userDataAdd.lastName_valid = false;
+            this.userDataAdd.firstName_valid = false;
+            this.userDataAdd.tel_valid = false;
+            this.userDataUpdate.lastName_valid = false;
+            this.userDataUpdate.firstName_valid = false;
+            this.userDataUpdate.tel_valid = false;
         }
     },
     created() {
