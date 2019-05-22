@@ -4,7 +4,10 @@ let app = new Vue({
     data: {
         datePicker: {
             mode: "single",
-            selectedDate: null
+            selectedDate: null,
+            attributes: {
+                color: 'red'
+            }
         },
         pageNumbers: [],
         userDataUpdate: {
