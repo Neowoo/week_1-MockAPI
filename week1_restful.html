@@ -197,8 +197,8 @@
                         </div>
                         <div class="input-field col s8">
                             <input type="text" class="validate"
-                                   v-model="userDataUpdate.address.address_detail">
-                            <label for="email">地址</label>
+                                   v-model="userDataUpdate.address.address_detail" @change="editUser_checkValid_address">
+                            <label :class="{active: userDataUpdate.address_valid}">地址</label>
                         </div>
                     </div>
                     <div class="row">
@@ -208,7 +208,7 @@
                                 <input type="file" @change="uploadPhoto_updateUser">
                             </div>
                             <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text">
+                                <input class="file-path validate" type="text" v-model="userDataUpdate.photo">
                             </div>
                         </div>
                     </div>

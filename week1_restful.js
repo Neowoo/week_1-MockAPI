@@ -21,7 +21,8 @@ let app = new Vue({
             lastName_valid: false,
             firstName_valid: false,
             tel_valid: false,
-            photo_valid: false
+            photo_valid: false,
+            address_valid: false,
         },
         userDataAdd: {
             address: {
@@ -38,7 +39,8 @@ let app = new Vue({
             lastName_valid: false,
             firstName_valid: false,
             tel_valid: false,
-            photo_valid: false
+            photo_valid: false,
+
         },
         queryUserId: '',
         editFormToggle: false,
@@ -162,16 +164,22 @@ let app = new Vue({
                 })
         },
         editUser(index) {
-            this.queryUserId = this.userData[index].id;
-            this.userDataUpdate.firstName = this.userData[index].firstName;
-            this.userDataUpdate.lastName = this.userData[index].lastName;
-            this.userDataUpdate.tel = this.userData[index].tel;
-            this.userDataUpdate.photo = this.userData[index].photo;
+            let userData = this.userData[index];
+            this.queryUserId = userData.id;
+            this.userDataUpdate.firstName = userData.firstName;
+            this.userDataUpdate.lastName = userData.lastName;
+            this.userDataUpdate.tel = userData.tel;
+            this.userDataUpdate.birthday = new Date(userData.birthday);
+            this.userDataUpdate.photo = userData.photo;
+            this.userDataUpdate.interest = userData.interest;
+            this.userDataUpdate.address.city = userData.city;
+            this.userDataUpdate.address.address_detail = userData.address;
             this.editUser_checkValid_lastName();
             this.editUser_checkValid_firstName();
             this.editUser_checkValid_tel();
+            this.editUser_checkValid_address();
             this.editFormToggle = true;
-            console.log(this.userData[index])
+            console.log(index)
         },
         buttonCancel() {
             this.editFormToggle = false;
@@ -252,11 +260,28 @@ let app = new Vue({
             let tel = this.userDataUpdate.tel;
             let telRegexp = "^09[0-9]{8}$";
             let checkResult = tel.match(telRegexp);
+            console.log(checkResult[0]);
             if (checkResult[0] !== '' && checkResult.input.length <= 10) {
                 this.userDataUpdate.tel_valid = true;
             } else {
                 this.userDataUpdate.tel_valid = false;
             }
+        },
+        editUser_checkValid_address(){
+            let address = this.userDataUpdate.address.address_detail;
+            // console.log("測試"+ address);
+            if(address !== ""){
+                this.userDataUpdate.address_valid = true;
+            } else {
+                this.userDataUpdate.address_valid = false;
+            }
+            // console.log("測試"+this.userDataUpdate.address_valid)
+            // if(address){
+            //     this.userDataUpdate.address_valid == true;
+            // } else {
+            //     this.userDataUpdate.address_valid == false;
+            // }
+            // this.userDataUpdate.address_valid = true;
         },
         addUserConfirm() {
             if (this.userDataAdd.lastName_valid && this.userDataAdd.firstName_valid && this.userDataAdd.tel_valid) {
@@ -357,6 +382,7 @@ let app = new Vue({
             this.userDataUpdate.lastName_valid = false;
             this.userDataUpdate.firstName_valid = false;
             this.userDataUpdate.tel_valid = false;
+            this.userDataUpdate.address_valid = false;
         }
     },
     created() {
