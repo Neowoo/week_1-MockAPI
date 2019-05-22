@@ -56,11 +56,7 @@ mainArea__form {
 .mainArea__form-close {
     position: absolute;
     right: -8%;
-    top: -4%;
-}
-
-.mainArea__form {
-    top: 20%;
+    top: -3%;
 }
 
 .last-next-page {
@@ -124,6 +120,8 @@ mainArea__form {
     z-index: 2;
     display: flex;
     justify-content: center;
+    top: -5rem;
+    max-width: 391.5px;
 }
 
 .edit-userform-background {
@@ -143,12 +141,18 @@ mainArea__form {
     z-index: 2;
     display: flex;
     justify-content: center;
+    top: -5rem;
+    max-width: 391.5px;
 }
 
 .validRecommend {
     font-size: .5rem;
 }
 
-.tel-valid-recommend{
+.tel-valid-recommend {
     text-align: center;
+}
+
+.user-interest p{
+    margin-left: 1rem;
 }
