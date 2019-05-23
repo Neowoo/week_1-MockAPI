@@ -156,3 +156,7 @@ mainArea__form {
 .user-interest p{
     margin-left: 1rem;
 }
+
+.user-interest span {
+    margin-left: .5rem;
+}

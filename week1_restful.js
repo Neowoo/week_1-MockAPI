@@ -3,7 +3,7 @@ let app = new Vue({
     el: "#app",
     data: {
         maxDate: new Date(),
-        interestOptions: ["玩電動", "打籃球", "看書", "潛水", "測試", "飛行傘", "繪圖", "游泳", "寫書法"],
+        interestOptions: ["玩電動", "打籃球", "看書", "潛水", "健身", "飛行傘", "繪圖", "游泳", "寫書法"],
         taiwanCities: ["臺北市", "基隆市", "新北市", "宜蘭縣", "新竹市", "新竹縣", "桃園縣", "苗栗縣", "臺中市", "彰化縣", "南投縣", "嘉義市", "嘉義縣", "雲林縣", "臺南市", "高雄市", "澎湖縣", "屏東縣", "臺東縣", "花蓮縣", "金門縣", "連江縣", "南海諸島"],
         pageNumbers: [],
         userDataUpdate: {
@@ -40,6 +40,7 @@ let app = new Vue({
             firstName_valid: false,
             tel_valid: false,
             photo_valid: false,
+            address_valid: false
 
         },
         queryUserId: '',
@@ -206,7 +207,7 @@ let app = new Vue({
             reader.readAsDataURL(file);
         },
         editConfirm() {
-            if (this.userDataUpdate.lastName_valid && this.userDataUpdate.firstName_valid && this.userDataUpdate.tel_valid) {
+            if (this.userDataUpdate.lastName_valid && this.userDataUpdate.firstName_valid && this.userDataUpdate.tel_valid && this.userDataUpdate.address_valid) {
                 axios.put("/" + this.queryUserId, {
                     firstName: this.userDataUpdate.firstName,
                     lastName: this.userDataUpdate.lastName,
@@ -270,22 +271,15 @@ let app = new Vue({
         },
         editUser_checkValid_address(){
             let address = this.userDataUpdate.address.address_detail;
-            // console.log("測試"+ address);
-            if(address !== ""){
+            let city = this.userDataUpdate.address.city;
+            if(address !== "" && city !== ""){
                 this.userDataUpdate.address_valid = true;
             } else {
                 this.userDataUpdate.address_valid = false;
             }
-            // console.log("測試"+this.userDataUpdate.address_valid)
-            // if(address){
-            //     this.userDataUpdate.address_valid == true;
-            // } else {
-            //     this.userDataUpdate.address_valid == false;
-            // }
-            // this.userDataUpdate.address_valid = true;
         },
         addUserConfirm() {
-            if (this.userDataAdd.lastName_valid && this.userDataAdd.firstName_valid && this.userDataAdd.tel_valid) {
+            if (this.userDataAdd.lastName_valid && this.userDataAdd.firstName_valid && this.userDataAdd.tel_valid && this.userDataAdd.address_valid) {
                 axios.post("", {
                     firstName: this.userDataAdd.firstName,
                     lastName: this.userDataAdd.lastName,
@@ -309,12 +303,12 @@ let app = new Vue({
                         let errMassage;
                         switch (err.response.status) {
                             case 413 :
-                                errMassage = "上傳圖片過大!"
+                                errMassage = "請上傳50kb以下圖片!"
                         }
                         alert(errMassage);
                     })
             } else {
-                alert("請確認填妥表單")
+                alert("請確認填妥表格")
             }
         },
         addUser_checkValid_lastName() {
@@ -346,6 +340,15 @@ let app = new Vue({
                 this.userDataAdd.tel_valid = true;
             } else {
                 this.userDataAdd.tel_valid = false;
+            }
+        },
+        addUser_checkValid_address(){
+            let address = this.userDataAdd.address.address_detail;
+            let city = this.userDataAdd.address.city;
+            if(address !== "" && city !== ""){
+                this.userDataAdd.address_valid = true;
+            } else {
+                this.userDataAdd.address_valid = false;
             }
         },
         checkPageNumbers() {
