@@ -165,6 +165,15 @@ let app = new Vue({
                 })
         },
         editUser(index) {
+            this.read_selected_userData(index);
+            this.editUser_checkValid_lastName();
+            this.editUser_checkValid_firstName();
+            this.editUser_checkValid_tel();
+            this.editUser_checkValid_address();
+            this.editFormToggle = true;
+            console.log(index)
+        },
+        read_selected_userData(index) {
             let userData = this.userData[index];
             this.queryUserId = userData.id;
             this.userDataUpdate.firstName = userData.firstName;
@@ -176,12 +185,6 @@ let app = new Vue({
             this.userDataUpdate.interest = userData.interest;
             this.userDataUpdate.address.city = userData.city;
             this.userDataUpdate.address.address_detail = userData.address;
-            this.editUser_checkValid_lastName();
-            this.editUser_checkValid_firstName();
-            this.editUser_checkValid_tel();
-            this.editUser_checkValid_address();
-            this.editFormToggle = true;
-            console.log(index)
         },
         buttonCancel() {
             this.editFormToggle = false;
@@ -269,10 +272,10 @@ let app = new Vue({
                 this.userDataUpdate.tel_valid = false;
             }
         },
-        editUser_checkValid_address(){
+        editUser_checkValid_address() {
             let address = this.userDataUpdate.address.address_detail;
             let city = this.userDataUpdate.address.city;
-            if(address !== "" && city !== ""){
+            if (address !== "" && city !== "") {
                 this.userDataUpdate.address_valid = true;
             } else {
                 this.userDataUpdate.address_valid = false;
@@ -342,10 +345,10 @@ let app = new Vue({
                 this.userDataAdd.tel_valid = false;
             }
         },
-        addUser_checkValid_address(){
+        addUser_checkValid_address() {
             let address = this.userDataAdd.address.address_detail;
             let city = this.userDataAdd.address.city;
-            if(address !== "" && city !== ""){
+            if (address !== "" && city !== "") {
                 this.userDataAdd.address_valid = true;
             } else {
                 this.userDataAdd.address_valid = false;
