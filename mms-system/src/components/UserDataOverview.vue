@@ -116,6 +116,7 @@
                             <div class="col s6 offset-s6">
                                 <button class="btn grey lighten-2" @click="clearRemainData">取消</button>
                                 <button class="btn teal lighten-3 ml-1" @click.prevent="addUserConfirm">確定</button>
+                                <a class="waves-effect waves-light btn" @click="test">測試鈕</a>
                             </div>
                         </div>
                     </form>
@@ -264,7 +265,6 @@
         </table>
         <div class="addUserBtn">
             <a class="red lighten-2 btn-small" @click="addFormToggle = true"><i class="material-icons left">add</i>新增會員</a>
-            <a class="waves-effect waves-light btn" @click="test">測試</a>
         </div>
         <ul class="d-flex-center pageList">
             <li class="pageList__first-last-items" @click="firstPage">第一頁</li>
@@ -498,37 +498,46 @@
                 }
             },
             addUserConfirm() {
-                if (this.userDataAdd.lastName_valid && this.userDataAdd.firstName_valid && this.userDataAdd.tel_valid && this.userDataAdd.address_valid) {
-                    axios.post("", {
-                        firstName: this.userDataAdd.firstName,
-                        lastName: this.userDataAdd.lastName,
-                        tel: this.userDataAdd.tel,
-                        birthday: this.addUser_birthdayFormat,
-                        gender: this.userDataAdd.gender,
-                        interest: this.userDataAdd.interest,
-                        city: this.userDataAdd.address.city,
-                        address: this.userDataAdd.address.address_detail,
-                        photo: this.userDataAdd.photo
+                let account_valid = this.errors.has('userAccount');
+                axios.get("?search=" + this.userDataAdd.account)
+                    .then(res => {
+                        alert("帳號已被註冊，請輸入其他帳號。")
                     })
-                        .then(res => {
-                            console.log(res);
-                            this.checkPageNumbers();
-                            this.userListReload();
-                            this.clearRemainData();
-                            this.addFormToggle = false;
-                        })
-                        .catch(err => {
-                            console.log(err.response.status);
-                            let errMassage;
-                            switch (err.response.status) {
-                                case 413 :
-                                    errMassage = "請上傳50kb以下圖片!"
-                            }
-                            alert(errMassage);
-                        })
-                } else {
-                    alert("請確認填妥表格")
-                }
+                    .catch(err => {
+                        if (this.userDataAdd.lastName_valid && this.userDataAdd.firstName_valid && this.userDataAdd.tel_valid &&
+                            this.userDataAdd.address_valid && !account_valid && this.userDataAdd.account !== "") {
+                            axios.post("", {
+                                firstName: this.userDataAdd.firstName,
+                                lastName: this.userDataAdd.lastName,
+                                tel: this.userDataAdd.tel,
+                                birthday: this.addUser_birthdayFormat,
+                                gender: this.userDataAdd.gender,
+                                interest: this.userDataAdd.interest,
+                                city: this.userDataAdd.address.city,
+                                address: this.userDataAdd.address.address_detail,
+                                photo: this.userDataAdd.photo,
+                                account: this.userDataAdd.account
+                            })
+                                .then(res => {
+                                    console.log(res);
+                                    this.checkPageNumbers();
+                                    this.userListReload();
+                                    this.clearRemainData();
+                                    this.addFormToggle = false;
+                                })
+                                .catch(err => {
+                                    console.log(err.response.status);
+                                    let errMassage;
+                                    switch (err.response.status) {
+                                        case 413 :
+                                            errMassage = "請上傳50kb以下圖片!"
+                                    }
+                                    alert(errMassage);
+                                })
+                        } else {
+                            alert("請確認填妥表格")
+                        }
+                    })
             },
             buttonCancel() {
                 this.editFormToggle = false;
@@ -687,13 +696,9 @@
                 this.userDataUpdate.tel_valid = false;
                 this.userDataUpdate.address_valid = false;
             },
-            test(){
-                axios.get("?search=",{
-                    lastName: "劉德華"
-                })
-                    .then(res => {
-                        console.log(res)
-                    })
+            test() {
+                // console.log(this.errors.has('userAccount'));
+
             }
         },
         created() {
@@ -702,8 +707,6 @@
         }
     }
 </script>
-
-<style src=""></style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
