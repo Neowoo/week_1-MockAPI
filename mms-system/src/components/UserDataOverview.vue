@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <h3 class="title-area">
             會員資料系統
         </h3>
@@ -12,6 +12,22 @@
                        @click="buttonCancel"><i class="material-icons">close</i></a>
                     <form class="col mainArea__form grey lighten-5 z-depth-2">
                         <h5 class="mainArea__form-title">新增會員資料</h5>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" id="add_account" v-validate="'min:6'" name="userAccount"
+                                       class="validate" :class="{ invalid: errors.has('userAccount') }"
+                                       v-model="userDataAdd.account">
+                                <label for="add_account">帳號</label>
+                                <span class="dataFormAlert" v-show="errors.has('userAccount')">請至少輸入6個字元</span>
+                            </div>
+                            <div class="input-field col s12">
+                                <input type="password" id="add_password" v-validate="'min:6'" name="userPassword"
+                                       class="validate" :class="{ invalid: errors.has('userPassword') }"
+                                       v-model="userDataAdd.password">
+                                <label for="add_password">密碼</label>
+                                <span class="dataFormAlert" v-show="errors.has('userPassword')">請至少輸入6個字元</span>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="input-field col s6">
                                 <input type="text" id="add_last_name" v-model="userDataAdd.lastName" class="validate"
@@ -248,6 +264,7 @@
         </table>
         <div class="addUserBtn">
             <a class="red lighten-2 btn-small" @click="addFormToggle = true"><i class="material-icons left">add</i>新增會員</a>
+            <a class="waves-effect waves-light btn" @click="test">測試</a>
         </div>
         <ul class="d-flex-center pageList">
             <li class="pageList__first-last-items" @click="firstPage">第一頁</li>
@@ -307,14 +324,31 @@
                     firstName_valid: false,
                     tel_valid: false,
                     photo_valid: false,
-                    address_valid: false
-
+                    address_valid: false,
+                    account: "",
+                    password: ""
                 },
                 queryUserId: '',
                 editFormToggle: false,
                 addFormToggle: false,
                 userData: [],
                 currentPage: 1
+            }
+        },
+        computed: {
+            addUser_birthdayFormat() {
+                let birthday = this.userDataAdd.birthday;
+                let YYYY = birthday.getFullYear();
+                let MM = birthday.getMonth() + 1;
+                let DD = birthday.getDate();
+                return YYYY + "-" + MM + "-" + DD;
+            },
+            editUser_birthdayFormat() {
+                let birthday = this.userDataUpdate.birthday;
+                let YYYY = birthday.getFullYear();
+                let MM = birthday.getMonth() + 1;
+                let DD = birthday.getDate();
+                return YYYY + "-" + MM + "-" + DD;
             }
         },
         methods: {
@@ -627,6 +661,8 @@
                 }
             },
             clearRemainData() {
+                this.userDataAdd.account = "";
+                this.userDataAdd.password = "";
                 this.userDataAdd.lastName = "";
                 this.userDataAdd.firstName = "";
                 this.userDataAdd.tel = "";
@@ -650,6 +686,14 @@
                 this.userDataUpdate.firstName_valid = false;
                 this.userDataUpdate.tel_valid = false;
                 this.userDataUpdate.address_valid = false;
+            },
+            test(){
+                axios.get("?search=",{
+                    lastName: "劉德華"
+                })
+                    .then(res => {
+                        console.log(res)
+                    })
             }
         },
         created() {
@@ -824,5 +868,10 @@
 
     .user-interest span {
         margin-left: .5rem;
+    }
+
+    .dataFormAlert {
+        font-size: .5rem;
+        color: red;
     }
 </style>
