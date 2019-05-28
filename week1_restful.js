@@ -84,7 +84,7 @@ let app = new Vue({
             axios.get("?page=" + this.currentPage +
                 "&limit=6")
                 .then(res => {
-                    for (i = 0; i < res.data.length; i++) {
+                    for (let i = 0; i < res.data.length; i++) {
                         jsonData.push(res.data[i]);
                     }
                 })
@@ -96,7 +96,7 @@ let app = new Vue({
             axios.get("?page=" + this.currentPage +
                 "&limit=6")
                 .then(res => {
-                    for (i = 0; i < res.data.length; i++) {
+                    for (let i = 0; i < res.data.length; i++) {
                         jsonData.push(res.data[i]);
                     }
                 });
@@ -127,7 +127,7 @@ let app = new Vue({
                     "&limit=6")
                     .then(res => {
                         console.log(res);
-                        for (i = 0; i < res.data.length; i++) {
+                        for (let i = 0; i < res.data.length; i++) {
                             jsonData.push(res.data[i]);
                         }
                     })

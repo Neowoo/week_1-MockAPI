@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="./mockAPI.css">
     <link rel='stylesheet' href='https://unpkg.com/v-calendar/lib/v-calendar.min.css'>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Document</title>
@@ -39,8 +38,7 @@
                             <p v-show="!userDataAdd.lastName_valid" class="validRecommend">請輸入0~5字中文</p>
                         </div>
                         <div class="input-field col s6">
-                            <input id="add_first_name" type="text" class="validate" v-model="userDataAdd.firstName"
-                                   class="validate" pattern="[\u4e00-\u9fa5]{0,5}"
+                            <input id="add_first_name" type="text" class="validate" v-model="userDataAdd.firstName" pattern="[\u4e00-\u9fa5]{0,5}"
                                    @change="addUser_checkValid_firstName">
                             <label for="add_first_name">名</label>
                             <p v-show="!userDataAdd.firstName_valid" class="validRecommend">請輸入0~5字中文</p>
