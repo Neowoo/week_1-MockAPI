@@ -16,58 +16,66 @@
                             <div class="input-field col s12">
                                 <input type="text" id="add_account" v-validate="'min:6'" name="userAccount"
                                        class="validate" :class="{ invalid: errors.has('userAccount') }"
-                                       v-model="userDataAdd.account">
+                                       v-model="$store.state.userDataAdd.account">
                                 <label for="add_account">帳號</label>
                                 <span class="dataFormAlert" v-show="errors.has('userAccount')">請至少輸入6個字元</span>
                             </div>
                             <div class="input-field col s12">
                                 <input type="password" id="add_password" v-validate="'min:6'" name="userPassword"
                                        class="validate" :class="{ invalid: errors.has('userPassword') }"
-                                       v-model="userDataAdd.password">
+                                       v-model="$store.state.userDataAdd.password">
                                 <label for="add_password">密碼</label>
                                 <span class="dataFormAlert" v-show="errors.has('userPassword')">請至少輸入6個字元</span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input type="text" id="add_last_name" v-model="userDataAdd.lastName" class="validate"
+                                <input type="text" id="add_last_name" v-model="$store.state.userDataAdd.lastName"
+                                       class="validate"
                                        pattern="[\u4e00-\u9fa5]{0,5}" @change="addUser_checkValid_lastName">
                                 <label for="add_last_name">姓</label>
-                                <p v-show="!userDataAdd.lastName_valid" class="validRecommend">請輸入0~5字中文</p>
+                                <p v-show="!$store.state.userDataAdd.lastName_valid" class="validRecommend">
+                                    請輸入0~5字中文</p>
                             </div>
                             <div class="input-field col s6">
-                                <input id="add_first_name" type="text" class="validate" v-model="userDataAdd.firstName"
+                                <input id="add_first_name" type="text" class="validate"
+                                       v-model="$store.state.userDataAdd.firstName"
                                        pattern="[\u4e00-\u9fa5]{0,5}"
                                        @change="addUser_checkValid_firstName">
                                 <label for="add_first_name">名</label>
-                                <p v-show="!userDataAdd.firstName_valid" class="validRecommend">請輸入0~5字中文</p>
+                                <p v-show="!$store.state.userDataAdd.firstName_valid" class="validRecommend">
+                                    請輸入0~5字中文</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="add_tel" type="text" class="validate" v-model="userDataAdd.tel"
+                                <input id="add_tel" type="text" class="validate" v-model="$store.state.userDataAdd.tel"
                                        @change="addUser_checkValid_tel" pattern="^09[0-9]{8}$">
                                 <label for="add_tel">電話</label>
-                                <p v-show="!userDataAdd.tel_valid" class="validRecommend tel-valid-recommend">
+                                <p v-show="!$store.state.userDataAdd.tel_valid"
+                                   class="validRecommend tel-valid-recommend">
                                     請輸入台灣手機格式(09+8碼)</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
                                 <p>生日</p>
-                                <v-date-picker mode="single" v-model="userDataAdd.birthday" :max-date="maxDate"
+                                <v-date-picker mode="single" v-model="$store.state.userDataAdd.birthday"
+                                               :max-date="this.$store.state.maxDate"
                                                is-required/>
                             </div>
                             <div class="input-field col s12">
                                 <p>性別</p>
                                 <p>
                                     <label>
-                                        <input name="group1" type="radio" checked v-model="userDataAdd.gender"
+                                        <input name="group1" type="radio" checked
+                                               v-model="$store.state.userDataAdd.gender"
                                                value="男"/>
                                         <span>男</span>
                                     </label>
                                     <label>
-                                        <input name="group1" type="radio" v-model="userDataAdd.gender" value="女"/>
+                                        <input name="group1" type="radio" v-model="$store.state.userDataAdd.gender"
+                                               value="女"/>
                                         <span>女</span>
                                     </label>
                                 </p>
@@ -77,8 +85,9 @@
                             <div class="input-field col s12">
                                 <p>興趣</p>
                                 <p class="user-interest">
-                                    <label v-for="(options, index) in interestOptions" :key="index">
-                                        <input type="checkbox" :value="options" v-model="userDataAdd.interest"/>
+                                    <label v-for="(options, index) in this.$store.state.interestOptions" :key="index">
+                                        <input type="checkbox" :value="options"
+                                               v-model="$store.state.userDataAdd.interest"/>
                                         <span>{{options}}</span>
                                     </label>
                                 </p>
@@ -86,19 +95,20 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s4">
-                                <select class="browser-default " v-model="userDataAdd.address.city"
+                                <select class="browser-default " v-model="$store.state.userDataAdd.address.city"
                                         @change="addUser_checkValid_address">
                                     <option value="" disabled selected>選擇縣/市</option>
-                                    <option v-for="(cities, index) in taiwanCities" :key="index">
+                                    <option v-for="(cities, index) in this.$store.state.taiwanCities" :key="index">
                                         {{cities}}
                                     </option>
                                 </select>
                             </div>
                             <div class="input-field col s8">
-                                <input type="text" class="validate" v-model="userDataAdd.address.address_detail"
+                                <input type="text" class="validate"
+                                       v-model="$store.state.userDataAdd.address.address_detail"
                                        @change="addUser_checkValid_address">
                                 <label for="email">地址</label>
-                                <p v-show="!userDataAdd.address_valid" class="validRecommend">地址請勿空白</p>
+                                <p v-show="!$store.state.userDataAdd.address_valid" class="validRecommend">地址請勿空白</p>
                             </div>
                         </div>
                         <div class="row">
@@ -115,7 +125,7 @@
                         <div class="row">
                             <div class="col s6 offset-s6">
                                 <button class="btn grey lighten-2" @click="clearRemainData">取消</button>
-                                <button class="btn teal lighten-3 ml-1" @click.prevent="addUserConfirm">確定</button>
+                                <button class="btn teal lighten-3 ml-1" @click.prevent="addUser_before_confirm">確定</button>
                                 <a class="waves-effect waves-light btn" @click="test">測試鈕</a>
                             </div>
                         </div>
@@ -132,44 +142,54 @@
                         <h5 class="mainArea__form-title">編輯會員資料</h5>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="last_name" type="text" class="validate" v-model="userDataUpdate.lastName"
+                                <input id="last_name" type="text" class="validate"
+                                       v-model="$store.state.userDataUpdate.lastName"
                                        @change="editUser_checkValid_lastName" pattern="[\u4e00-\u9fa5]{0,5}">
-                                <label for="last_name" :class="{active: userDataUpdate.lastName_valid}">姓</label>
-                                <p v-show="!userDataUpdate.lastName_valid" class="validRecommend">請輸入0~5字中文</p>
+                                <label for="last_name"
+                                       :class="{active: $store.state.userDataUpdate.lastName_valid}">姓</label>
+                                <p v-show="!$store.state.userDataUpdate.lastName_valid" class="validRecommend">
+                                    請輸入0~5字中文</p>
                             </div>
                             <div class="input-field col s6">
-                                <input id="first_name" type="text" class="validate" v-model="userDataUpdate.firstName"
+                                <input id="first_name" type="text" class="validate"
+                                       v-model="$store.state.userDataUpdate.firstName"
                                        @change="editUser_checkValid_firstName" pattern="[\u4e00-\u9fa5]{0,5}">
-                                <label for="first_name" :class="{active: userDataUpdate.firstName_valid}">名</label>
-                                <p v-show="!userDataUpdate.firstName_valid" class="validRecommend">請輸入0~5字中文</p>
+                                <label for="first_name"
+                                       :class="{active: $store.state.userDataUpdate.firstName_valid}">名</label>
+                                <p v-show="!$store.state.userDataUpdate.firstName_valid" class="validRecommend">
+                                    請輸入0~5字中文</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="tel" type="text" class="validate" v-model="userDataUpdate.tel"
+                                <input id="tel" type="text" class="validate" v-model="$store.state.userDataUpdate.tel"
                                        @change="editUser_checkValid_tel"
                                        pattern="^09[0-9]{8}$">
-                                <label for="tel" :class="{active: userDataUpdate.tel_valid}">電話</label>
-                                <p v-show="!userDataUpdate.tel_valid" class="validRecommend tel-valid-recommend">
+                                <label for="tel" :class="{active: $store.state.userDataUpdate.tel_valid}">電話</label>
+                                <p v-show="!$store.state.userDataUpdate.tel_valid"
+                                   class="validRecommend tel-valid-recommend">
                                     請輸入台灣手機格式(09+8碼)</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
                                 <p>生日</p>
-                                <v-date-picker mode="single" v-model="userDataUpdate.birthday" :max-date="maxDate"
+                                <v-date-picker mode="single" v-model="$store.state.userDataUpdate.birthday"
+                                               :max-date="this.$store.state.maxDate"
                                                is-required/>
                             </div>
                             <div class="input-field col s12">
                                 <p>性別</p>
                                 <p>
                                     <label>
-                                        <input name="group1" type="radio" checked v-model="userDataUpdate.gender"
+                                        <input name="group1" type="radio" checked
+                                               v-model="$store.state.userDataUpdate.gender"
                                                value="男"/>
                                         <span>男</span>
                                     </label>
                                     <label>
-                                        <input name="group1" type="radio" v-model="userDataUpdate.gender" value="女"/>
+                                        <input name="group1" type="radio" v-model="$store.state.userDataUpdate.gender"
+                                               value="女"/>
                                         <span>女</span>
                                     </label>
                                 </p>
@@ -179,8 +199,9 @@
                             <div class="input-field col s12">
                                 <p>興趣</p>
                                 <p class="user-interest">
-                                    <label v-for="(options, index) in interestOptions" :key="index">
-                                        <input type="checkbox" :value="options" v-model="userDataUpdate.interest"/>
+                                    <label v-for="(options, index) in this.$store.state.interestOptions" :key="index">
+                                        <input type="checkbox" :value="options"
+                                               v-model="$store.state.userDataUpdate.interest"/>
                                         <span>{{options}}</span>
                                     </label>
                                 </p>
@@ -188,19 +209,19 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s4">
-                                <select class="browser-default " v-model="userDataUpdate.address.city">
+                                <select class="browser-default " v-model="$store.state.userDataUpdate.address.city">
                                     <option value="" disabled selected>選擇縣/市</option>
-                                    <option v-for="(cities, index) in taiwanCities" :key="index">
+                                    <option v-for="(cities, index) in this.$store.state.taiwanCities" :key="index">
                                         {{cities}}
                                     </option>
                                 </select>
                             </div>
                             <div class="input-field col s8">
                                 <input type="text" class="validate"
-                                       v-model="userDataUpdate.address.address_detail"
+                                       v-model="$store.state.userDataUpdate.address.address_detail"
                                        @change="editUser_checkValid_address">
-                                <label :class="{active: userDataUpdate.address_valid}">地址</label>
-                                <p v-show="!userDataUpdate.address_valid" class="validRecommend">地址請勿空白</p>
+                                <label :class="{active: $store.state.userDataUpdate.address_valid}">地址</label>
+                                <p v-show="!$store.state.userDataUpdate.address_valid" class="validRecommend">地址請勿空白</p>
                             </div>
                         </div>
                         <div class="row">
@@ -210,7 +231,8 @@
                                     <input type="file" @change="uploadPhoto_updateUser">
                                 </div>
                                 <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text" v-model="userDataUpdate.photo">
+                                    <input class="file-path validate" type="text"
+                                           v-model="$store.state.userDataUpdate.photo">
                                 </div>
                             </div>
                         </div>
@@ -286,48 +308,27 @@
         name: 'UserDataOverview',
         data() {
             return {
-                maxDate: new Date(),
-                interestOptions: ["玩電動", "打籃球", "看書", "潛水", "健身", "飛行傘", "繪圖", "游泳", "寫書法"],
-                taiwanCities: ["臺北市", "基隆市", "新北市", "宜蘭縣", "新竹市", "新竹縣", "桃園縣", "苗栗縣", "臺中市", "彰化縣", "南投縣", "嘉義市", "嘉義縣", "雲林縣", "臺南市", "高雄市", "澎湖縣", "屏東縣", "臺東縣", "花蓮縣", "金門縣", "連江縣", "南海諸島"],
                 pageNumbers: [],
-                userDataUpdate: {
-                    address: {
-                        city: "",
-                        address_detail: ""
-                    },
-                    lastName: "",
-                    firstName: "",
-                    tel: "",
-                    birthday: "",
-                    gender: "",
-                    interest: [],
-                    photo: "",
-                    lastName_valid: false,
-                    firstName_valid: false,
-                    tel_valid: false,
-                    photo_valid: false,
-                    address_valid: false,
-                },
-                userDataAdd: {
-                    address: {
-                        city: "",
-                        address_detail: ""
-                    },
-                    lastName: "",
-                    firstName: "",
-                    tel: "",
-                    birthday: "",
-                    gender: "",
-                    interest: [],
-                    photo: "",
-                    lastName_valid: false,
-                    firstName_valid: false,
-                    tel_valid: false,
-                    photo_valid: false,
-                    address_valid: false,
-                    account: "",
-                    password: ""
-                },
+                // $store.state.userDataAdd: {
+                //     address: {
+                //         city: "",
+                //         address_detail: ""
+                //     },
+                //     lastName: "",
+                //     firstName: "",
+                //     tel: "",
+                //     birthday: "",
+                //     gender: "",
+                //     interest: [],
+                //     photo: "",
+                //     lastName_valid: false,
+                //     firstName_valid: false,
+                //     tel_valid: false,
+                //     photo_valid: false,
+                //     address_valid: false,
+                //     account: "",
+                //     password: ""
+                // },
                 queryUserId: '',
                 editFormToggle: false,
                 addFormToggle: false,
@@ -337,14 +338,14 @@
         },
         computed: {
             addUser_birthdayFormat() {
-                let birthday = this.userDataAdd.birthday;
+                let birthday = this.$store.state.userDataAdd.birthday;
                 let YYYY = birthday.getFullYear();
                 let MM = birthday.getMonth() + 1;
                 let DD = birthday.getDate();
                 return YYYY + "-" + MM + "-" + DD;
             },
             editUser_birthdayFormat() {
-                let birthday = this.userDataUpdate.birthday;
+                let birthday = this.$store.state.userDataUpdate.birthday;
                 let YYYY = birthday.getFullYear();
                 let MM = birthday.getMonth() + 1;
                 let DD = birthday.getDate();
@@ -363,9 +364,9 @@
                         console.log(jsonData)
                     });
                 this.userData = jsonData;
-                this.userDataAdd.firstName_valid = false;
-                this.userDataAdd.lastName_valid = false;
-                this.userDataAdd.tel_valid = false
+                this.$store.state.userDataAdd.firstName_valid = false;
+                this.$store.state.userDataAdd.lastName_valid = false;
+                this.$store.state.userDataAdd.tel_valid = false
             },
             deleteUser(index) {
                 this.queryUserId = this.userData[index].id;
@@ -392,15 +393,15 @@
             read_selected_userData(index) {
                 let userData = this.userData[index];
                 this.queryUserId = userData.id;
-                this.userDataUpdate.firstName = userData.firstName;
-                this.userDataUpdate.lastName = userData.lastName;
-                this.userDataUpdate.tel = userData.tel;
-                this.userDataUpdate.birthday = new Date(userData.birthday);
-                this.userDataUpdate.gender = userData.gender;
-                this.userDataUpdate.photo = userData.photo;
-                this.userDataUpdate.interest = userData.interest;
-                this.userDataUpdate.address.city = userData.city;
-                this.userDataUpdate.address.address_detail = userData.address;
+                this.$store.state.userDataUpdate.firstName = userData.firstName;
+                this.$store.state.userDataUpdate.lastName = userData.lastName;
+                this.$store.state.userDataUpdate.tel = userData.tel;
+                this.$store.state.userDataUpdate.birthday = new Date(userData.birthday);
+                this.$store.state.userDataUpdate.gender = userData.gender;
+                this.$store.state.userDataUpdate.photo = userData.photo;
+                this.$store.state.userDataUpdate.interest = userData.interest;
+                this.$store.state.userDataUpdate.address.city = userData.city;
+                this.$store.state.userDataUpdate.address.address_detail = userData.address;
             },
             buttonCancel() {
                 this.editFormToggle = false;
@@ -412,7 +413,7 @@
                 let reader = new FileReader();
                 console.log(file.size);
                 reader.onloadend = (e) => {
-                    this.userDataAdd.photo = reader.result;
+                    this.$store.state.userDataAdd.photo = reader.result;
                 };
                 reader.readAsDataURL(file);
             },
@@ -421,22 +422,22 @@
                 let reader = new FileReader();
                 console.log(file.size);
                 reader.onloadend = (e) => {
-                    this.userDataUpdate.photo = reader.result;
+                    this.$store.state.userDataUpdate.photo = reader.result;
                 };
                 reader.readAsDataURL(file);
             },
             editConfirm() {
-                if (this.userDataUpdate.lastName_valid && this.userDataUpdate.firstName_valid && this.userDataUpdate.tel_valid && this.userDataUpdate.address_valid) {
+                if (this.$store.state.userDataUpdate.lastName_valid && this.$store.state.userDataUpdate.firstName_valid && this.$store.state.userDataUpdate.tel_valid && this.$store.state.userDataUpdate.address_valid) {
                     axios.put("/" + this.queryUserId, {
-                        firstName: this.userDataUpdate.firstName,
-                        lastName: this.userDataUpdate.lastName,
-                        tel: this.userDataUpdate.tel,
+                        firstName: this.$store.state.userDataUpdate.firstName,
+                        lastName: this.$store.state.userDataUpdate.lastName,
+                        tel: this.$store.state.userDataUpdate.tel,
                         birthday: this.editUser_birthdayFormat,
-                        gender: this.userDataUpdate.gender,
-                        interest: this.userDataUpdate.interest,
-                        city: this.userDataUpdate.address.city,
-                        address: this.userDataUpdate.address.address_detail,
-                        photo: this.userDataUpdate.photo
+                        gender: this.$store.state.userDataUpdate.gender,
+                        interest: this.$store.state.userDataUpdate.interest,
+                        city: this.$store.state.userDataUpdate.address.city,
+                        address: this.$store.state.userDataUpdate.address.address_detail,
+                        photo: this.$store.state.userDataUpdate.photo
                     })
                         .then(res => {
                             console.log(res);
@@ -457,87 +458,100 @@
                 }
             },
             editUser_checkValid_lastName() {
-                let lastName = this.userDataUpdate.lastName;
+                let lastName = this.$store.state.userDataUpdate.lastName;
                 let lastNameRegexp = "[\u4e00-\u9fa5]{0,5}";
                 let checkResult = lastName.match(lastNameRegexp);
                 console.log(checkResult);
                 if (checkResult[0] !== '' && checkResult.input.length <= 5) {
-                    this.userDataUpdate.lastName_valid = true;
+                    this.$store.state.userDataUpdate.lastName_valid = true;
                 } else {
-                    this.userDataUpdate.lastName_valid = false;
+                    this.$store.state.userDataUpdate.lastName_valid = false;
                 }
             },
             editUser_checkValid_firstName() {
-                let firstName = this.userDataUpdate.firstName;
+                let firstName = this.$store.state.userDataUpdate.firstName;
                 let firstNameRegexp = "[\u4e00-\u9fa5]{0,5}";
                 let checkResult = firstName.match(firstNameRegexp);
                 if (checkResult[0] !== '' && checkResult.input.length <= 5) {
-                    this.userDataUpdate.firstName_valid = true;
+                    this.$store.state.userDataUpdate.firstName_valid = true;
                 } else {
-                    this.userDataUpdate.firstName_valid = false;
+                    this.$store.state.userDataUpdate.firstName_valid = false;
                 }
             },
             editUser_checkValid_tel() {
-                let tel = this.userDataUpdate.tel;
+                let tel = this.$store.state.userDataUpdate.tel;
                 let telRegexp = "^09[0-9]{8}$";
                 let checkResult = tel.match(telRegexp);
                 console.log(checkResult[0]);
                 if (checkResult[0] !== '' && checkResult.input.length <= 10) {
-                    this.userDataUpdate.tel_valid = true;
+                    this.$store.state.userDataUpdate.tel_valid = true;
                 } else {
-                    this.userDataUpdate.tel_valid = false;
+                    this.$store.state.userDataUpdate.tel_valid = false;
                 }
             },
             editUser_checkValid_address() {
-                let address = this.userDataUpdate.address.address_detail;
-                let city = this.userDataUpdate.address.city;
+                let address = this.$store.state.userDataUpdate.address.address_detail;
+                let city = this.$store.state.userDataUpdate.address.city;
                 if (address !== "" && city !== "") {
-                    this.userDataUpdate.address_valid = true;
+                    this.$store.state.userDataUpdate.address_valid = true;
                 } else {
-                    this.userDataUpdate.address_valid = false;
+                    this.$store.state.userDataUpdate.address_valid = false;
                 }
             },
-            addUserConfirm() {
+            addUser_before_confirm() {
+                if (this.$store.state.userDataAdd.account !== "") {
+                    axios.get("?search=" + this.$store.state.userDataAdd.account)
+                        .then(res => {
+                            if(res.data[0]){
+                                alert("此帳號已存在，請更換帳號")
+                            } else {
+                                this.addUserCconfirm();
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err)
+                        });
+                } else {
+                    alert("帳號必需填")
+                }
+                // this.addUser_before_confirm();
+            },
+            addUserCconfirm() {
                 let account_valid = this.errors.has('userAccount');
-                axios.get("?search=" + this.userDataAdd.account)
-                    .then(res => {
-                        alert("帳號已被註冊，請輸入其他帳號。")
+                if (this.$store.state.userDataAdd.lastName_valid && this.$store.state.userDataAdd.firstName_valid && this.$store.state.userDataAdd.tel_valid &&
+                    this.$store.state.userDataAdd.address_valid && !account_valid) {
+                    axios.post("", {
+                        firstName: this.$store.state.userDataAdd.firstName,
+                        lastName: this.$store.state.userDataAdd.lastName,
+                        tel: this.$store.state.userDataAdd.tel,
+                        birthday: this.addUser_birthdayFormat,
+                        gender: this.$store.state.userDataAdd.gender,
+                        interest: this.$store.state.userDataAdd.interest,
+                        city: this.$store.state.userDataAdd.address.city,
+                        address: this.$store.state.userDataAdd.address.address_detail,
+                        photo: this.$store.state.userDataAdd.photo,
+                        account: this.$store.state.userDataAdd.account,
+                        password: this.$store.state.userDataAdd.password
                     })
-                    .catch(err => {
-                        if (this.userDataAdd.lastName_valid && this.userDataAdd.firstName_valid && this.userDataAdd.tel_valid &&
-                            this.userDataAdd.address_valid && !account_valid && this.userDataAdd.account !== "") {
-                            axios.post("", {
-                                firstName: this.userDataAdd.firstName,
-                                lastName: this.userDataAdd.lastName,
-                                tel: this.userDataAdd.tel,
-                                birthday: this.addUser_birthdayFormat,
-                                gender: this.userDataAdd.gender,
-                                interest: this.userDataAdd.interest,
-                                city: this.userDataAdd.address.city,
-                                address: this.userDataAdd.address.address_detail,
-                                photo: this.userDataAdd.photo,
-                                account: this.userDataAdd.account
-                            })
-                                .then(res => {
-                                    console.log(res);
-                                    this.checkPageNumbers();
-                                    this.userListReload();
-                                    this.clearRemainData();
-                                    this.addFormToggle = false;
-                                })
-                                .catch(err => {
-                                    console.log(err.response.status);
-                                    let errMassage;
-                                    switch (err.response.status) {
-                                        case 413 :
-                                            errMassage = "請上傳50kb以下圖片!"
-                                    }
-                                    alert(errMassage);
-                                })
-                        } else {
-                            alert("請確認填妥表格")
-                        }
-                    })
+                        .then(res => {
+                            console.log(res);
+                            this.checkPageNumbers();
+                            this.userListReload();
+                            this.clearRemainData();
+                            this.addFormToggle = false;
+                        })
+                        .catch(err => {
+                            console.log(err.response.status);
+                            let errMassage;
+                            switch (err.response.status) {
+                                case 413 :
+                                    errMassage = "請上傳50kb以下圖片!"
+                            }
+                            alert(errMassage);
+                        })
+                } else {
+                    alert("請確認填妥表格")
+                }
             },
             buttonCancel() {
                 this.editFormToggle = false;
@@ -545,43 +559,43 @@
                 this.clearRemainData();
             },
             addUser_checkValid_lastName() {
-                let lastName = this.userDataAdd.lastName;
+                let lastName = this.$store.state.userDataAdd.lastName;
                 let lastNameRegexp = "[\u4e00-\u9fa5]{0,5}";
                 let checkResult = lastName.match(lastNameRegexp);
                 console.log(checkResult);
                 if (checkResult[0] !== '' && checkResult.input.length <= 5) {
-                    this.userDataAdd.lastName_valid = true;
+                    this.$store.state.userDataAdd.lastName_valid = true;
                 } else {
-                    this.userDataAdd.lastName_valid = false;
+                    this.$store.state.userDataAdd.lastName_valid = false;
                 }
             },
             addUser_checkValid_firstName() {
-                let firstName = this.userDataAdd.firstName;
+                let firstName = this.$store.state.userDataAdd.firstName;
                 let firstNameRegexp = "[\u4e00-\u9fa5]{0,5}";
                 let checkResult = firstName.match(firstNameRegexp);
                 if (checkResult[0] !== '' && checkResult.input.length <= 5) {
-                    this.userDataAdd.firstName_valid = true;
+                    this.$store.state.userDataAdd.firstName_valid = true;
                 } else {
-                    this.userDataAdd.firstName_valid = false;
+                    this.$store.state.userDataAdd.firstName_valid = false;
                 }
             },
             addUser_checkValid_tel() {
-                let tel = this.userDataAdd.tel;
+                let tel = this.$store.state.userDataAdd.tel;
                 let telRegexp = "^09[0-9]{8}$";
                 let checkResult = tel.match(telRegexp);
                 if (checkResult[0] !== '' && checkResult.input.length <= 10) {
-                    this.userDataAdd.tel_valid = true;
+                    this.$store.state.userDataAdd.tel_valid = true;
                 } else {
-                    this.userDataAdd.tel_valid = false;
+                    this.$store.state.userDataAdd.tel_valid = false;
                 }
             },
             addUser_checkValid_address() {
-                let address = this.userDataAdd.address.address_detail;
-                let city = this.userDataAdd.address.city;
+                let address = this.$store.state.userDataAdd.address.address_detail;
+                let city = this.$store.state.userDataAdd.address.city;
                 if (address !== "" && city !== "") {
-                    this.userDataAdd.address_valid = true;
+                    this.$store.state.userDataAdd.address_valid = true;
                 } else {
-                    this.userDataAdd.address_valid = false;
+                    this.$store.state.userDataAdd.address_valid = false;
                 }
             },
             firstPage() {
@@ -621,6 +635,7 @@
                         for (let i = 0; i < res.data.length; i++) {
                             jsonData.push(res.data[i]);
                         }
+                        console.log(res)
                     });
                 this.userData = jsonData;
             },
@@ -670,35 +685,36 @@
                 }
             },
             clearRemainData() {
-                this.userDataAdd.account = "";
-                this.userDataAdd.password = "";
-                this.userDataAdd.lastName = "";
-                this.userDataAdd.firstName = "";
-                this.userDataAdd.tel = "";
-                this.userDataAdd.birthday = "";
-                this.userDataAdd.gender = "";
-                this.userDataAdd.interest = [];
-                this.userDataAdd.address.city = "";
-                this.userDataAdd.address.address_detail = "";
-                this.userDataAdd.photo = "";
-                this.userDataUpdate.lastName = "";
-                this.userDataUpdate.firstName = "";
-                this.userDataUpdate.tel = "";
-                this.userDataUpdate.birthday = "";
-                this.userDataUpdate.gender = "";
-                this.userDataUpdate.interest = [];
-                this.userDataUpdate.photo = "";
-                this.userDataAdd.lastName_valid = false;
-                this.userDataAdd.firstName_valid = false;
-                this.userDataAdd.tel_valid = false;
-                this.userDataUpdate.lastName_valid = false;
-                this.userDataUpdate.firstName_valid = false;
-                this.userDataUpdate.tel_valid = false;
-                this.userDataUpdate.address_valid = false;
+                this.$store.state.userDataAdd.account = "";
+                this.$store.state.userDataAdd.password = "";
+                this.$store.state.userDataAdd.lastName = "";
+                this.$store.state.userDataAdd.firstName = "";
+                this.$store.state.userDataAdd.tel = "";
+                this.$store.state.userDataAdd.birthday = "";
+                this.$store.state.userDataAdd.gender = "";
+                this.$store.state.userDataAdd.interest = [];
+                this.$store.state.userDataAdd.address.city = "";
+                this.$store.state.userDataAdd.address.address_detail = "";
+                this.$store.state.userDataAdd.photo = "";
+                this.$store.state.userDataAdd.account = "";
+                this.$store.state.userDataAdd.password = "";
+                this.$store.state.userDataUpdate.lastName = "";
+                this.$store.state.userDataUpdate.firstName = "";
+                this.$store.state.userDataUpdate.tel = "";
+                this.$store.state.userDataUpdate.birthday = "";
+                this.$store.state.userDataUpdate.gender = "";
+                this.$store.state.userDataUpdate.interest = [];
+                this.$store.state.userDataUpdate.photo = "";
+                this.$store.state.userDataAdd.lastName_valid = false;
+                this.$store.state.userDataAdd.firstName_valid = false;
+                this.$store.state.userDataAdd.tel_valid = false;
+                this.$store.state.userDataUpdate.lastName_valid = false;
+                this.$store.state.userDataUpdate.firstName_valid = false;
+                this.$store.state.userDataUpdate.tel_valid = false;
+                this.$store.state.userDataUpdate.address_valid = false;
             },
             test() {
-                // console.log(this.errors.has('userAccount'));
-
+                this.$router.push("/personalInfo");
             }
         },
         created() {
@@ -707,13 +723,13 @@
         }
     }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
     *:not(.material-icons) {
         font-family: 'Noto Sans TC', sans-serif;
     }
-
+</style>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
     .title-area {
         text-align: center;
         margin: 2% 0 3%;

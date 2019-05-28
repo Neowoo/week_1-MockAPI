@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import UserData from './views/UserData.vue'
+import Login from './views/Login.vue'
+import PersonalInfo from './views/PersonalInfo'
 
 Vue.use(Router)
 
@@ -10,8 +12,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      name: 'login',
+      component: Login
+    },
+    {
+      path: "/userData",
+      name: "userData",
+      component: UserData
+    },
+    {
+      path: "/personalInfo",
+      name: "personal-info",
+      component: PersonalInfo
     },
     {
       path: '/about',
