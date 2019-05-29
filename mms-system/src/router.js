@@ -18,14 +18,32 @@ export default new Router({
     {
       path: "/userData",
       name: "userData",
-      component: UserData
+      component: UserData,
+      beforeEnter: (to, from, next) => {
+        let auth = localStorage.getItem("loginNow");
+        console.log(auth);
+        if(auth){
+          next()
+        } else {
+          next("*")
+          alert("請先登錄帳號密碼");
+        }
+      }
+      
     },
     {
       path: "/personalInfo",
       name: "personal-info",
       component: PersonalInfo,
       beforeEnter: (to, from, next) => {
-          next(false)
+        let auth = localStorage.getItem("loginNow");
+        console.log(auth);
+        if(auth){
+          next()
+        } else {
+          next("*")
+          alert("請先登錄帳號密碼");
+        }
       }
     },
     {

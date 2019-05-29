@@ -127,11 +127,12 @@ export default new Vuex.Store({
                 });
             console.log(recordId)
         },
-        logOut(){
+        logOut({commit},self){
             // alert("hi")
+            self.$router.push("/")
             localStorage.removeItem("loginID");
             localStorage.removeItem("loginPassword");
-            localStorage.removeItem("loginNow")
+            localStorage.removeItem("loginNow");
         }
     }
 })

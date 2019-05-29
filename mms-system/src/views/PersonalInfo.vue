@@ -16,10 +16,8 @@
                         </router-link>
                     </div>
                     <div class="col s2 push-s3 personalInfo__logout">
-                        <router-link :to="{name: 'login'}" >
                             <a class="btn-floating btn-large waves-effect red lighten-2 btn" @click="logOut"><i
                                     class="material-icons">exit_to_app</i></a>
-                        </router-link>
                     </div>
                 </div>
             </div>
@@ -73,7 +71,8 @@
         },
         methods: {
           logOut(){
-            this.$store.dispatch("logOut")
+            let self = this;
+            this.$store.dispatch("logOut", self)
           }
         },
         created() {
