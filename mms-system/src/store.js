@@ -28,6 +28,10 @@ export default new Vuex.Store({
             tel_valid: false,
             photo_valid: false,
             address_valid: false,
+            account: "",
+            password: "",
+            account_valid: false,
+            password_valid: false
         },
         userDataAdd: {
             address: {
@@ -73,7 +77,7 @@ export default new Vuex.Store({
             state.managerData.lastName = data.lastName;
             state.managerData.firstName = data.firstName;
             state.managerData.tel = data.tel;
-            state.managerData.birthday = new Date(data.birthday);
+            state.managerData.birthday = data.birthday;
             state.managerData.gender = data.gender;
             state.managerData.interest = data.interest;
             state.managerData.photo = data.photo;
@@ -91,7 +95,7 @@ export default new Vuex.Store({
     actions: {
         login({state, commit,dispatch}, self) {
             if (state.loginAccount !== "" && state.loginPassword !== "") {
-                axios.get("?filter=" + state.loginAccount + "&search=" + state.loginPassword)
+                axios.get("?filter=" + state.loginPassword + "&search=" + state.loginAccount)
                     .then(res => {
                         console.log(res.data[0]);
                         if (res.data.length == 0) {
@@ -101,9 +105,10 @@ export default new Vuex.Store({
                         }
                         localStorage.setItem("loginID", state.loginAccount);
                         localStorage.setItem("loginPassword", state.loginPassword);
-                        self.$router.push("/personalInfo");
+                        debugger;
                         commit("getManagerData", res.data[0]);
                         commit("clearLoginData")
+                        self.$router.push("/personalInfo");
                     })
             } else {
                 alert("請輸入帳號、密碼")
@@ -116,12 +121,17 @@ export default new Vuex.Store({
                 userId: recordId,
                 userPassword: recordPassword
             })
-            axios.get("?filter=" + state.loginAccount + "&search=" + state.loginPassword)
+            axios.get("?filter=" + state.loginPassword + "&search=" + state.loginAccount)
                 .then(res => {
-                    commit("getManagerData", res.data[0]);               
-                })
-            console.log(recordPassword)
-        }
+                    commit("getManagerData", res.data[0]);
+                });
+            console.log(recordId)
+        },
+        logOut(){
+            // alert("hi")
+            localStorage.removeItem("loginID");
+            localStorage.removeItem("loginPassword");
 
+        }
     }
 })

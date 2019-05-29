@@ -31,7 +31,6 @@
                         <div class="row">
                             <div class="input-field col s7 offset-s2" style="text-align: center">
                                 <a class="waves-effect waves-light btn" @click="login">登入</a>
-<!--                                <input class="waves-effect waves-light btn" type="submit" @click="login" value="登入">-->
                             </div>
                         </div>
                     </form>
@@ -41,6 +40,7 @@
     </div>
 </template>
 <script>
+    import axios from "axios"
     export default {
         name: "LoginForm",
         data() {
@@ -52,10 +52,17 @@
             login(){
                 let self = this;
                 this.$store.dispatch("login", self)
+            },
+            test(){
+                console.log(this.$store.state.loginPassword);
+                axios.get("?filter=gundamt2006&search=wuhongyi2015")
+                    .then( res => {
+                        console.log(res.data)
+                    })
             }
         },
-        mounted() {
-
+        created() {
+            this.$store.commit("clearLoginData");
         }
     }
 </script>

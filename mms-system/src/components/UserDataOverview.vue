@@ -1,8 +1,15 @@
 <template>
     <div class="container">
-        <h3 class="title-area">
-            會員資料系統
-        </h3>
+        <div class="title-area row">
+            <h3 class="col s6 offset-s3 text-center">
+                會員資料系統
+            </h3>
+            <div class="col s3 backToPersonalInfo">
+                <router-link :to="{name: 'personal-info'}">
+                    <a class="waves-effect waves-light btn-small"><i class="material-icons right">cloud</i>返回個人資料</a>
+                </router-link>
+            </div>
+        </div>
         <div class="mainArea__form  d-flex-center">
             <!-- 新增表單 -->
             <div class="row p-absolute mainArea__form" v-if="addFormToggle">
@@ -108,7 +115,7 @@
                                        v-model="$store.state.userDataAdd.address.address_detail"
                                        @change="addUser_checkValid_address">
                                 <label for="email">地址</label>
-                                <p v-show="!$store.state.userDataAdd.address_valid" class="validRecommend">地址請勿空白</p>
+                                <!--                                <p v-show="!$store.state.userDataAdd.address_valid" class="validRecommend">地址請勿空白</p>-->
                             </div>
                         </div>
                         <div class="row">
@@ -125,8 +132,9 @@
                         <div class="row">
                             <div class="col s6 offset-s6">
                                 <button class="btn grey lighten-2" @click="clearRemainData">取消</button>
-                                <button class="btn teal lighten-3 ml-1" @click.prevent="addUser_before_confirm">確定</button>
-                                <a class="waves-effect waves-light btn" @click="test">測試鈕</a>
+                                <button class="btn teal lighten-3 ml-1" @click.prevent="addUser_before_confirm">確定
+                                </button>
+                                <!--                                <a class="waves-effect waves-light btn" @click="test">測試鈕</a>-->
                             </div>
                         </div>
                     </form>
@@ -134,12 +142,30 @@
             </div>
             <!--            編輯表單-->
             <div class="row p-absolute mainArea__form" v-if="editFormToggle">
-                <div class="edit-userform-background" @click.sef="buttonCancel"></div>
+                <div class="edit-userform-background" @click="buttonCancel"></div>
                 <div class="edit-userform-content">
                     <a class="btn-floating btn-large waves-effect helfway-fab red lighten-2 mainArea__form-close"
                        @click="buttonCancel"><i class="material-icons">close</i></a>
                     <form class="col mainArea__form grey lighten-5 z-depth-2">
                         <h5 class="mainArea__form-title">編輯會員資料</h5>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" id="edit_account" v-validate="'min:6'" name="editUserAccount"
+                                       class="validate" :class="{ invalid: errors.has('editUserAccount') }"
+                                       @change="editUser_checkValid_account"
+                                       v-model="$store.state.userDataUpdate.account">
+                                <label for="edit_account" :class="{active: $store.state.userDataUpdate.account_valid}">帳號</label>
+                                <span class="dataFormAlert" v-show="errors.has('editUserAccount')">請至少輸入6個字元</span>
+                            </div>
+                            <div class="input-field col s12">
+                                <input type="password" id="edit_password" v-validate="'min:6'" name="editUserPassword"
+                                       class="validate" :class="{ invalid: errors.has('editUserPassword') }"
+                                       @change="editUser_checkValid_password"
+                                       v-model="$store.state.userDataUpdate.password">
+                                <label for="edit_password" :class="{active: $store.state.userDataUpdate.password_valid}">密碼</label>
+                                <span class="dataFormAlert" v-show="errors.has('editUserPassword')">請至少輸入6個字元</span>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="input-field col s6">
                                 <input id="last_name" type="text" class="validate"
@@ -271,7 +297,7 @@
                 <td>{{users.gender}}</td>
                 <td>
                     <ul>
-                        <li v-for="(items, index) in users.interest">{{items}}</li>
+                        <li v-for="(items, index) in users.interest" :key="index">{{items}}</li>
                     </ul>
                 </td>
                 <td>{{users.city + users.address}}</td>
@@ -309,26 +335,6 @@
         data() {
             return {
                 pageNumbers: [],
-                // $store.state.userDataAdd: {
-                //     address: {
-                //         city: "",
-                //         address_detail: ""
-                //     },
-                //     lastName: "",
-                //     firstName: "",
-                //     tel: "",
-                //     birthday: "",
-                //     gender: "",
-                //     interest: [],
-                //     photo: "",
-                //     lastName_valid: false,
-                //     firstName_valid: false,
-                //     tel_valid: false,
-                //     photo_valid: false,
-                //     address_valid: false,
-                //     account: "",
-                //     password: ""
-                // },
                 queryUserId: '',
                 editFormToggle: false,
                 addFormToggle: false,
@@ -387,6 +393,8 @@
                 this.editUser_checkValid_firstName();
                 this.editUser_checkValid_tel();
                 this.editUser_checkValid_address();
+                this.editUser_checkValid_account();
+                this.editUser_checkValid_password();
                 this.editFormToggle = true;
                 console.log(index)
             },
@@ -402,6 +410,8 @@
                 this.$store.state.userDataUpdate.interest = userData.interest;
                 this.$store.state.userDataUpdate.address.city = userData.city;
                 this.$store.state.userDataUpdate.address.address_detail = userData.address;
+                this.$store.state.userDataUpdate.account = userData.account;
+                this.$store.state.userDataUpdate.password = userData.password;
             },
             buttonCancel() {
                 this.editFormToggle = false;
@@ -412,7 +422,7 @@
                 let file = e.target.files[0];
                 let reader = new FileReader();
                 console.log(file.size);
-                reader.onloadend = (e) => {
+                reader.onloadend = () => {
                     this.$store.state.userDataAdd.photo = reader.result;
                 };
                 reader.readAsDataURL(file);
@@ -421,7 +431,7 @@
                 let file = e.target.files[0];
                 let reader = new FileReader();
                 console.log(file.size);
-                reader.onloadend = (e) => {
+                reader.onloadend = () => {
                     this.$store.state.userDataUpdate.photo = reader.result;
                 };
                 reader.readAsDataURL(file);
@@ -437,7 +447,9 @@
                         interest: this.$store.state.userDataUpdate.interest,
                         city: this.$store.state.userDataUpdate.address.city,
                         address: this.$store.state.userDataUpdate.address.address_detail,
-                        photo: this.$store.state.userDataUpdate.photo
+                        photo: this.$store.state.userDataUpdate.photo,
+                        account: this.$store.state.userDataUpdate.account,
+                        password: this.$store.state.userDataUpdate.password
                     })
                         .then(res => {
                             console.log(res);
@@ -455,6 +467,22 @@
                         })
                 } else {
                     alert("請確認填妥表單")
+                }
+            },
+            editUser_checkValid_account() {
+                let account = this.$store.state.userDataUpdate.account;
+                if (account !== "") {
+                    this.$store.state.userDataUpdate.account_valid = true;
+                } else {
+                    this.$store.state.userDataUpdate.account_valid = false;
+                }
+            },
+            editUser_checkValid_password() {
+                let password = this.$store.state.userDataUpdate.password;
+                if (password !== "") {
+                    this.$store.state.userDataUpdate.password_valid = true;
+                } else {
+                    this.$store.state.userDataUpdate.password_valid = false;
                 }
             },
             editUser_checkValid_lastName() {
@@ -499,27 +527,28 @@
                 }
             },
             addUser_before_confirm() {
-                if (this.$store.state.userDataAdd.account !== "") {
+                if (this.$store.state.userDataAdd.account !== "" && this.$store.state.userDataAdd.password !== "") {
                     axios.get("?search=" + this.$store.state.userDataAdd.account)
                         .then(res => {
-                            if(res.data[0]){
+                            if (res.data[0]) {
                                 alert("此帳號已存在，請更換帳號")
                             } else {
-                                this.addUserCconfirm();
+                                this.addUserConfirm();
                             }
                         })
                         .catch(err => {
                             console.log(err)
                         });
                 } else {
-                    alert("帳號必需填")
+                    alert("帳號、密碼必需填寫")
                 }
                 // this.addUser_before_confirm();
             },
-            addUserCconfirm() {
+            addUserConfirm() {
                 let account_valid = this.errors.has('userAccount');
-                if (this.$store.state.userDataAdd.lastName_valid && this.$store.state.userDataAdd.firstName_valid && this.$store.state.userDataAdd.tel_valid &&
-                    this.$store.state.userDataAdd.address_valid && !account_valid) {
+                let password_valid = this.errors.has('userPassword')
+                console.log(account_valid)
+                if (this.$store.state.userDataAdd.lastName_valid && this.$store.state.userDataAdd.firstName_valid && !account_valid && !password_valid) {
                     axios.post("", {
                         firstName: this.$store.state.userDataAdd.firstName,
                         lastName: this.$store.state.userDataAdd.lastName,
@@ -552,11 +581,6 @@
                 } else {
                     alert("請確認填妥表格")
                 }
-            },
-            buttonCancel() {
-                this.editFormToggle = false;
-                this.addFormToggle = false;
-                this.clearRemainData();
             },
             addUser_checkValid_lastName() {
                 let lastName = this.$store.state.userDataAdd.lastName;
@@ -712,6 +736,8 @@
                 this.$store.state.userDataUpdate.firstName_valid = false;
                 this.$store.state.userDataUpdate.tel_valid = false;
                 this.$store.state.userDataUpdate.address_valid = false;
+                this.$store.state.userDataUpdate.account_valid = false;
+                this.$store.state.userDataUpdate.password_valid = false;
             },
             test() {
                 this.$router.push("/personalInfo");
@@ -720,18 +746,35 @@
         created() {
             this.firstPage();
             this.checkPageNumbers();
+            this.clearRemainData();
         }
     }
 </script>
 <style>
-    *:not(.material-icons) {
+    *:not(.material-icons):not(.btn) {
         font-family: 'Noto Sans TC', sans-serif;
+    }
+
+    *:not(a):not(span):not(i) {
+        color: #616161;
+    }
+
+    .p-fixed {
+        position: fixed;
+    }
+
+    .p-absolute {
+        position: absolute;
+    }
+
+    .text-center {
+        text-align: center;
     }
 </style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     .title-area {
-        text-align: center;
+        /*text-align: center;*/
         margin: 2% 0 3%;
     }
 
@@ -750,13 +793,6 @@
         z-index: -100;
     }
 
-    .p-fixed {
-        position: fixed;
-    }
-
-    .p-absolute {
-        position: absolute;
-    }
 
     .mainArea {
         display: flex;
@@ -796,12 +832,6 @@
         padding: .6rem;
         margin: 0 .25rem;
     }
-
-    /*.pageList__item-choose {*/
-    /*    background-color: #e57373;*/
-    /*    color: white;*/
-    /*    border-radius: .3rem;*/
-    /*}*/
 
     .pageList li:hover {
         color: #e57373;
@@ -892,5 +922,9 @@
     .dataFormAlert {
         font-size: .5rem;
         color: red;
+    }
+
+    .backToPersonalInfo {
+        padding-top: 5%;
     }
 </style>
