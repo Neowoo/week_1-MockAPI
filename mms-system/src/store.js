@@ -105,7 +105,7 @@ export default new Vuex.Store({
                         }
                         localStorage.setItem("loginID", state.loginAccount);
                         localStorage.setItem("loginPassword", state.loginPassword);
-                        debugger;
+                        localStorage.setItem("loginNow", true);
                         commit("getManagerData", res.data[0]);
                         commit("clearLoginData")
                         self.$router.push("/personalInfo");
@@ -131,7 +131,7 @@ export default new Vuex.Store({
             // alert("hi")
             localStorage.removeItem("loginID");
             localStorage.removeItem("loginPassword");
-
+            localStorage.removeItem("loginNow")
         }
     }
 })

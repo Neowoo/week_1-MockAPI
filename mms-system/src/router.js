@@ -23,7 +23,10 @@ export default new Router({
     {
       path: "/personalInfo",
       name: "personal-info",
-      component: PersonalInfo
+      component: PersonalInfo,
+      beforeEnter: (to, from, next) => {
+          next(false)
+      }
     },
     {
       path: '/about',
