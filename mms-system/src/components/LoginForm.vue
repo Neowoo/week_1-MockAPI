@@ -12,7 +12,8 @@
                     <form class="col s12">
                         <div class="row">
                             <div class="input-field col s7 offset-s2">
-                                <input id="managerAccount" type="text" class="validate" v-model="$store.state.loginAccount">
+                                <input id="managerAccount" type="text" class="validate"
+                                       v-model="$store.state.loginAccount">
                                 <label for="managerAccount">
                                     帳號
                                     <i class="material-icons login__form--icon">person</i>
@@ -21,7 +22,8 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s7 offset-s2">
-                                <input id="managerPassword" type="password" class="validate" v-model="$store.state.loginPassword">
+                                <input id="managerPassword" type="password" class="validate"
+                                       v-model="$store.state.loginPassword">
                                 <label for="managerPassword">
                                     密碼
                                     <i class="material-icons login__form--icon">vpn_key</i>
@@ -31,6 +33,7 @@
                         <div class="row">
                             <div class="input-field col s7 offset-s2" style="text-align: center">
                                 <a class="waves-effect waves-light btn" @click="login">登入</a>
+                                <a class="waves-effect waves-light btn" @click="test">測試</a>
                             </div>
                         </div>
                     </form>
@@ -41,6 +44,7 @@
 </template>
 <script>
     import axios from "axios"
+
     export default {
         name: "LoginForm",
         data() {
@@ -49,15 +53,16 @@
             }
         },
         methods: {
-            login(){
+            login() {
                 let self = this;
                 this.$store.dispatch("login", self)
             },
-            test(){
+            test() {
                 console.log(this.$store.state.loginPassword);
-                axios.get("?filter=gundamt2006&search=wuhongyi2015")
-                    .then( res => {
-                        console.log(res.data)
+                // axios.get("?filter=gundamt2006&search=wuhongyi2015")
+                axios.get("?search=wuhongyi2018")
+                    .then(res => {
+                        console.log(res.data[0])
                     })
             }
         },
